@@ -5,7 +5,14 @@ import env from "dotenv";
 import { appDataSource } from "./src/config/database";
 const app = express();
 const port = 3003;
-app.use(cors());
+app.use(cors())
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 env.config();
 
 app.get("/", (req, res) => {
