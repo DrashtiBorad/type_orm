@@ -5,7 +5,7 @@ env.config();
 
 export const appDataSource = new DataSource({
   type: "postgres",
-  host: process.env.PG_HOST,
+  // host: process.env.PG_HOST,
   port: 5432,
   username: process.env.PG_USERNAME,
   password: process.env.PG_PASSWORD,
@@ -13,9 +13,4 @@ export const appDataSource = new DataSource({
   entities: [],
   synchronize: true,
   logging: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
 });
