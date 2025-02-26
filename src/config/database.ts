@@ -10,7 +10,7 @@ export const appDataSource = new DataSource({
   username: process.env.PG_USERNAME,
   password: process.env.PG_PASSWORD,
   database: process.env.DATABASE,
-  entities: [],
+  entities: ["src/entities/*.ts"],
   synchronize: true,
   logging: true,
 });
