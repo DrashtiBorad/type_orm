@@ -2,10 +2,12 @@
   "name": "type_orm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": ["dist"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.ts"
+    "start": "nodemon index.ts",
+    "build":"tsc"
   },
   "author": "",
   "license": "ISC",
