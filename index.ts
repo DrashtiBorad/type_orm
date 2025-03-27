@@ -15,7 +15,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
-app.use("/api", router);
+app.use("/", router);
 console.log({
   pg_Host: process.env.PG_HOST,
   username: process.env.PG_USERNAME,
