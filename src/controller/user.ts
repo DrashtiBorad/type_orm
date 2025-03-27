@@ -57,30 +57,32 @@ export const logIn = async (req: any, res: any) => {
 
   try {
     const result = await userDataSource.find({
-      where: {
-        email: email,
-        password: password,
-      },
+      where: { email, password },
     });
 
-    if (result) {
-      jwt.sign(
-        { result },
-        jwtPrivateKey as string,
-        { expiresIn: "1h" },
-        (error, token) => {
-          if (token) {
-            res.status(200).json({ result, auth: token });
-          } else if (error) {
-            console.log("error in jwt token", error);
-          }
-        }
-      );
-    } else {
-      res.status(400).json({ error: "Please Enter valid Email and password" });
+    // Ensure that user exists
+    if (result.length === 0) {
+      return res.status(400).json({ error: "Invalid Email or Password" });
     }
+
+    // Generate JWT token
+    jwt.sign(
+      { result },
+      jwtPrivateKey as string,
+      { expiresIn: "1h" },
+      (error, token) => {
+        if (error) {
+          console.log("Error in JWT token generation:", error);
+          return res.status(500).json({ error: "Token generation failed" });
+        }
+
+        // Send token only if there's no error
+        return res.status(200).json({ result, auth: token });
+      }
+    );
   } catch (err) {
-    res.send(400).json({ error: err });
+    console.error("Login error:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
