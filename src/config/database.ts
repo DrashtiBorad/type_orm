@@ -12,7 +12,7 @@ export const appDataSource = new DataSource({
   database: process.env.DATABASE,
   entities:
     process.env.NODE_ENV === "production"
-      ? ["dist/entities/*.js"]
+      ? ["dist/src/entities/*.js"]
       : ["src/entities/*.ts"],
   synchronize: true,
   logging: true,
