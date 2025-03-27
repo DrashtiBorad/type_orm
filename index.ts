@@ -17,16 +17,7 @@ app.use(
 );
 app.use("/", router);
 console.log({
-  pg_Host: process.env.PG_HOST,
-  username: process.env.PG_USERNAME,
-  password: process.env.PG_PASSWORD,
-  database: process.env.DATABASE,
-  jsonKey: process.env.JSON_KEY,
-  email: process.env.AUTH_USER_EMAIL,
-  json_password: process.env.AUTH_USER_PASSWORD,
-  bucketName: process.env.BUCKET_NAME,
-  awsKey: process.env.AWS_ACCESSKEY_ID,
-  seceretKey: process.env.AWS_SECRET_ACCESS_KEY,
+  NODE_ENV: process.env.NODE_ENV,
 });
 appDataSource
   .initialize()
