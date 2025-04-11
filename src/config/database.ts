@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import env from "dotenv";
+import { entities } from "../entities";
 
 env.config();
 
@@ -10,7 +11,7 @@ export const appDataSource = new DataSource({
   username: process.env.PG_USERNAME,
   password: process.env.PG_PASSWORD,
   database: process.env.DATABASE,
-  entities: ["dist/src/entities/*.js"],
+  entities: entities,
   synchronize: true,
   logging: true,
 });
