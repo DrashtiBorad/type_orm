@@ -62,8 +62,7 @@ export const logIn = async (req: any, res: any) => {
         password: password,
       },
     });
-
-    if (result) {
+    if (result.length > 0) {
       jwt.sign(
         { result },
         jwtPrivateKey as string,
