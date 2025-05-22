@@ -19,11 +19,11 @@ export const registration = async (req: any, res: any) => {
     });
 
     if (user.length > 0) {
-      res.status(400).json({ error: "Email is already registered." });
+      return res.status(400).json({ error: "Email is already registered." });
     }
 
     if (password !== confirmPassword) {
-      res
+      return res
         .status(400)
         .json({ error: "Password and ConfirmPassword do not match." });
     }
