@@ -86,7 +86,7 @@ export const logIn = async (req: any, res: any) => {
 export const sendOtp = async (req: any, res: any) => {
   const { email } = req.body;
 
-  const user = await userDataSource.findOne({ where: { email } });
+  const user = await userDataSource.findOne({ where: { email: email } });
   if (!user) {
     return res.status(400).json({ error: "Email is not registered." });
   }
@@ -108,6 +108,8 @@ export const sendOtp = async (req: any, res: any) => {
       html: `OTP is ${otpCode}`,
     });
 
+    await OtpDataSource.delete({ email });
+
     OtpDataSource.save({ email, otpCode, expiredAt: expireAt });
     res.status(200).json(info);
   } catch (err) {
@@ -118,7 +120,7 @@ export const sendOtp = async (req: any, res: any) => {
 export const otpVerify = async (req: any, res: any) => {
   const { email, otp } = req.body;
 
-  const storedOtps = await OtpDataSource.find(email);
+  const storedOtps = await OtpDataSource.find({ where: { email } });
   const storedOtp = storedOtps[0];
 
   const expiredTime = new Date(storedOtp.expiredAt);
