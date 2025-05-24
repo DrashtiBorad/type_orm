@@ -86,7 +86,7 @@ export const logIn = async (req: any, res: any) => {
 export const sendOtp = async (req: any, res: any) => {
   const { email } = req.body;
 
-  const user = await userDataSource.findOne({ where: email });
+  const user = await userDataSource.findOne({ where: { email } });
   if (!user) {
     return res.status(400).json({ error: "Email is not registered." });
   }
@@ -107,8 +107,6 @@ export const sendOtp = async (req: any, res: any) => {
       subject: "send mail",
       html: `OTP is ${otpCode}`,
     });
-
-    console.log("expireAt", expireAt);
 
     OtpDataSource.save({ email, otpCode, expiredAt: expireAt });
     res.status(200).json(info);
