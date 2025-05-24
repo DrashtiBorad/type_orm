@@ -85,9 +85,13 @@ export const logIn = async (req: any, res: any) => {
 
 export const sendOtp = async (req: any, res: any) => {
   const { email } = req.body;
+
+  const user = await userDataSource.findOne({ where: email });
+  if (!user) {
+    return res.status(400).json({ error: "Email is not registered." });
+  }
   const otpCode = Math.floor(100000 + Math.random() * 900000);
   const expireAt = new Date(Date.now() + 5 * 60 * 1000);
-
   try {
     const transporter = nodeMailer.createTransport({
       service: "gmail",
