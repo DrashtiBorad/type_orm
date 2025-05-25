@@ -111,7 +111,7 @@ export const sendOtp = async (req: any, res: any) => {
     await OtpDataSource.delete({ email });
 
     OtpDataSource.save({ email, otpCode, expiredAt: expireAt });
-    res.status(200).json(info);
+    res.status(200).json({ message: "OTP sent Successfully", otpCode });
   } catch (err) {
     res.send(400).json("Failed to send mail");
   }

@@ -30,10 +30,10 @@ const registration = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             },
         });
         if (user.length > 0) {
-            res.status(400).json({ error: "Email is already registered." });
+            return res.status(400).json({ error: "Email is already registered." });
         }
         if (password !== confirmPassword) {
-            res
+            return res
                 .status(400)
                 .json({ error: "Password and ConfirmPassword do not match." });
         }
@@ -66,7 +66,7 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 password: password,
             },
         });
-        if (result) {
+        if (result.length > 0) {
             jsonwebtoken_1.default.sign({ result }, jwtPrivateKey, { expiresIn: "1h" }, (error, token) => {
                 if (token) {
                     res.status(200).json({ result, auth: token });
@@ -87,6 +87,10 @@ const logIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.logIn = logIn;
 const sendOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
+    const user = yield userDataSource.findOne({ where: { email: email } });
+    if (!user) {
+        return res.status(400).json({ error: "Email is not registered." });
+    }
     const otpCode = Math.floor(100000 + Math.random() * 900000);
     const expireAt = new Date(Date.now() + 5 * 60 * 1000);
     try {
@@ -103,9 +107,9 @@ const sendOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             subject: "send mail",
             html: `OTP is ${otpCode}`,
         });
-        console.log("expireAt", expireAt);
+        yield OtpDataSource.delete({ email });
         OtpDataSource.save({ email, otpCode, expiredAt: expireAt });
-        res.status(200).json(info);
+        res.status(200).json({ message: "OTP sent Successfully", otpCode });
     }
     catch (err) {
         res.send(400).json("Failed to send mail");
@@ -114,7 +118,7 @@ const sendOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.sendOtp = sendOtp;
 const otpVerify = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, otp } = req.body;
-    const storedOtps = yield OtpDataSource.find(email);
+    const storedOtps = yield OtpDataSource.find({ where: { email } });
     const storedOtp = storedOtps[0];
     const expiredTime = new Date(storedOtp.expiredAt);
     if (!storedOtp) {

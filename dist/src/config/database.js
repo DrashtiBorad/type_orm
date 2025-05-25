@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.appDataSource = void 0;
 const typeorm_1 = require("typeorm");
 const dotenv_1 = __importDefault(require("dotenv"));
+const entities_1 = require("../entities");
 dotenv_1.default.config();
 exports.appDataSource = new typeorm_1.DataSource({
     type: "postgres",
@@ -14,7 +15,7 @@ exports.appDataSource = new typeorm_1.DataSource({
     username: process.env.PG_USERNAME,
     password: process.env.PG_PASSWORD,
     database: process.env.DATABASE,
-    entities: ["dist/src/entities/*.js"],
+    entities: entities_1.entities,
     synchronize: true,
     logging: true,
 });
