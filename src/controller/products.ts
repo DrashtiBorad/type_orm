@@ -28,6 +28,7 @@ export const addProducts = async (req: any, res: any) => {
     }
 
     const file = files.image;
+    console.log("file", file);
     if (!file) {
       return res.status(400).json({ error: "Image is required" });
     }
@@ -36,9 +37,11 @@ export const addProducts = async (req: any, res: any) => {
       file.map((list: any) => list.filepath)[0]
     );
 
-    const uniqueKey = `${Date.now()}-${file.map(
-      (list: any) => list.originalFilename
-    )}`;
+    console.log("fileStream", fileStream);
+
+    const uniqueKey = `product_images/${Date.now()}-${
+      file.map((list: any) => list.originalFilename)[0]
+    }`;
 
     try {
       await client.putObject({
@@ -48,8 +51,7 @@ export const addProducts = async (req: any, res: any) => {
         ContentType: `${file.map((list: any) => list.mimetype)[0]}`,
       });
 
-      const fileUrl = `https://${process.env.BUCKET_NAME}.s3.ap-south-1.amazonaws.com/${uniqueKey}`;
-      console.log("fileUrlfileUrl", fileUrl);
+      const fileUrl = `https://${process.env.BUCKET_NAME}/.s3.ap-south-1.amazonaws.com/${uniqueKey}`;
 
       const {
         name,
@@ -59,12 +61,12 @@ export const addProducts = async (req: any, res: any) => {
         is_top_categories,
         our_productType_categoriesId,
       } = fields;
+
       const categoryIdBasedOnName = await categoriesDataSource.find({
         where: {
           categories_name: our_productType_categoriesId[0],
         },
       });
-      console.log("fieldsfields", fields, categoryIdBasedOnName);
 
       await productDataSource
         .createQueryBuilder()
@@ -76,14 +78,13 @@ export const addProducts = async (req: any, res: any) => {
           price: Number(price),
           is_featured_product: is_featured_product[0] === "true",
           is_top_categories: is_top_categories[0] === "true",
-          our_productType_categoriesId: categoryIdBasedOnName[0].id,
+          our_productType_category: categoryIdBasedOnName[0].id,
           image: fileUrl,
         })
         .execute();
 
       res.status(200).json({
         message: "Product added successfully",
-        fileUrl,
       });
     } catch (uploadErr) {
       res
