@@ -89,7 +89,10 @@ export const addProducts = async (req: any, res: any) => {
     } catch (uploadErr) {
       res
         .status(500)
-        .json({ error: "Failed to upload to S3 or save product data" });
+        .json({
+          error: "Failed to upload to S3 or save product data",
+          uploadErr,
+        });
     }
   });
 };
