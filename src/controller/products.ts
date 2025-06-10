@@ -28,7 +28,6 @@ export const addProducts = async (req: any, res: any) => {
     }
 
     const file = files.image;
-    console.log("file", file);
     if (!file) {
       return res.status(400).json({ error: "Image is required" });
     }
@@ -36,8 +35,6 @@ export const addProducts = async (req: any, res: any) => {
     const fileStream = fs.createReadStream(
       file.map((list: any) => list.filepath)[0]
     );
-
-    console.log("fileStream", fileStream);
 
     const uniqueKey = `product_images/${Date.now()}-${
       file.map((list: any) => list.originalFilename)[0]
@@ -51,7 +48,7 @@ export const addProducts = async (req: any, res: any) => {
         ContentType: `${file.map((list: any) => list.mimetype)[0]}`,
       });
 
-      const fileUrl = `https://${process.env.BUCKET_NAME}/.s3.ap-south-1.amazonaws.com/${uniqueKey}`;
+      const fileUrl = `https://${process.env.BUCKET_NAME}.s3.ap-south-1.amazonaws.com/${uniqueKey}`;
 
       const {
         name,
@@ -87,12 +84,10 @@ export const addProducts = async (req: any, res: any) => {
         message: "Product added successfully",
       });
     } catch (uploadErr) {
-      res
-        .status(500)
-        .json({
-          error: "Failed to upload to S3 or save product data",
-          uploadErr,
-        });
+      res.status(500).json({
+        error: "Failed to upload to S3 or save product data",
+        uploadErr,
+      });
     }
   });
 };
@@ -127,7 +122,7 @@ export const getProducts = async (req: any, res: any) => {
       relations: ["our_productType_category"],
     });
 
-    res.status(200).json({ "All Products": result });
+    res.status(200).json({ Products: result });
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
