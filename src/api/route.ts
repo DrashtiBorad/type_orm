@@ -14,6 +14,7 @@ import {
 import {
   addProducts,
   deleteProducts,
+  getProductById,
   getProducts,
   updateProducts,
 } from "../controller/products";
@@ -49,6 +50,7 @@ router.get("/get-categories", verifyToken, getProductCategories);
 // Products (for admin)
 router.post("/add-products", verifyToken, addProducts);
 router.get("/get-products", verifyToken, getProducts);
+router.get("/get-productsById", verifyToken, getProductById);
 router.delete("/delete-products", verifyToken, deleteProducts);
 router.put("/update-products", verifyToken, updateProducts);
 

@@ -128,6 +128,22 @@ export const getProducts = async (req: any, res: any) => {
   }
 };
 
+export const getProductById = async (req: any, res: any) => {
+  const { productId } = req.body;
+
+  try {
+    const product = await productDataSource.findOne({
+      where: { id: productId },
+      relations: ["our_productType_category"],
+    });
+
+    res.status(200).json({ Products: product });
+  } catch (error) {
+    res.status(400).json({ error: "Product not found" });
+    return;
+  }
+};
+
 export const deleteProducts = async (req: any, res: any) => {
   const { productId } = req.body;
   try {
@@ -141,7 +157,6 @@ export const deleteProducts = async (req: any, res: any) => {
 
 export const updateProducts = async (req: any, res: any) => {
   const { id, ...otherValues } = req.body;
-  console.log("otherValues", otherValues);
   try {
     const result = await productDataSource
       .createQueryBuilder("product")
