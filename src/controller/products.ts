@@ -136,7 +136,7 @@ export const getProductById = async (req: any, res: any) => {
       relations: ["our_productType_category"],
     });
 
-    res.status(200).json({ Products: product });
+    res.status(200).json(product);
   } catch (error) {
     res.status(400).json({ error: "Product not found" });
     return;

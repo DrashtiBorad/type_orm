@@ -50,7 +50,7 @@ router.get("/get-categories", verifyToken, getProductCategories);
 // Products (for admin)
 router.post("/add-products", verifyToken, addProducts);
 router.get("/get-products", verifyToken, getProducts);
-router.get("/get-productsById/:id", verifyToken, getProductById);
+router.get("/get-productById/:id", verifyToken, getProductById);
 router.delete("/delete-products", verifyToken, deleteProducts);
 router.put("/update-products", verifyToken, updateProducts);
 
