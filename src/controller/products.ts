@@ -155,7 +155,8 @@ export const deleteProducts = async (req: any, res: any) => {
 };
 
 export const updateProducts = async (req: any, res: any) => {
-  const { id, ...otherValues } = req.body;
+  const { id } = req.params;
+  const { ...otherValues } = req.body;
   try {
     const result = await productDataSource
       .createQueryBuilder("product")

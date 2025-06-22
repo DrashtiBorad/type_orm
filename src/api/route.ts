@@ -52,7 +52,7 @@ router.post("/add-products", verifyToken, addProducts);
 router.get("/get-products", verifyToken, getProducts);
 router.get("/get-productById/:id", verifyToken, getProductById);
 router.delete("/delete-products", verifyToken, deleteProducts);
-router.put("/update-products", verifyToken, updateProducts);
+router.put("/update-products/:id", verifyToken, updateProducts);
 
 // cart Items
 router.post("/add-to-cart", verifyToken, addToCart);
