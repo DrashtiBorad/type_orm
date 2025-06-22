@@ -129,11 +129,10 @@ export const getProducts = async (req: any, res: any) => {
 };
 
 export const getProductById = async (req: any, res: any) => {
-  const { productId } = req.body;
-
+  const { id } = req.params;
   try {
     const product = await productDataSource.findOne({
-      where: { id: productId },
+      where: { id },
       relations: ["our_productType_category"],
     });
 
