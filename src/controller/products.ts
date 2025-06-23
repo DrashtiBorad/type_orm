@@ -144,7 +144,7 @@ export const getProductById = async (req: any, res: any) => {
 };
 
 export const deleteProducts = async (req: any, res: any) => {
-  const { productId } = req.body;
+  const { productId } = req.params;
   try {
     await productDataSource.delete(productId);
 
@@ -157,6 +157,7 @@ export const deleteProducts = async (req: any, res: any) => {
 export const updateProducts = async (req: any, res: any) => {
   const { id } = req.params;
   const { ...otherValues } = req.body;
+  console.log(otherValues, id, "otherValues");
   try {
     const result = await productDataSource
       .createQueryBuilder("product")
