@@ -51,7 +51,7 @@ router.get("/get-categories", verifyToken, getProductCategories);
 router.post("/add-products", verifyToken, addProducts);
 router.get("/get-products", verifyToken, getProducts);
 router.get("/get-productById/:id", verifyToken, getProductById);
-router.delete("/delete-products", verifyToken, deleteProducts);
+router.delete("/delete-products/:id", verifyToken, deleteProducts);
 router.put("/update-products/:id", verifyToken, updateProducts);
 
 // cart Items
