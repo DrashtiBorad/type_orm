@@ -144,9 +144,10 @@ export const getProductById = async (req: any, res: any) => {
 };
 
 export const deleteProducts = async (req: any, res: any) => {
-  const { productId } = req.params;
+  const { id } = req.params;
+  console.log(id, "id");
   try {
-    await productDataSource.delete(productId);
+    await productDataSource.delete(id);
 
     res.status(200).json("Product Deleted Successfully.");
   } catch (err) {
